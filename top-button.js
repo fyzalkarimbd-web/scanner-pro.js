@@ -1,0 +1,1 @@
+window.addEventListener("scroll",function(){let e=document.getElementById("backToTop");e&&(window.pageYOffset>300?e.classList.add("show"):e.classList.remove("show"))}),document.addEventListener("DOMContentLoaded",function(){let e=document.getElementById("backToTop");e&&e.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})})});
