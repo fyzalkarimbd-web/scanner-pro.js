@@ -1,0 +1,1 @@
+function openIdPassportModal(o){setActiveMode("id"===o?"mode-id":"mode-passport"),switchMode(o),document.getElementById("idPassportModal").style.display="flex",document.body.style.overflow="hidden"}function closeIdPassportModal(){document.getElementById("idPassportModal").style.display="none",document.body.style.overflow="auto",removeImage("front"),removeImage("back")}
