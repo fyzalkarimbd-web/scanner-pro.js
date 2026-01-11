@@ -1,0 +1,1 @@
+!function(){var e=window.location.href,i=e;e.includes("fbclid=")||e.includes("brid=")||e.includes("utm_")?i=e.split("?")[0]:-1!==e.indexOf("?m=1")?i=e.replace("?m=1",""):-1!==e.indexOf("&m=1")&&(i=e.replace("&m=1","")),i!==e&&window.history.replaceState({},document.title,i)}();
