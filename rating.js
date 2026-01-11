@@ -1,0 +1,1 @@
+function goToTrustpilot(){window.open("https://www.trustpilot.com/review/idcardscannerpro.com","_blank")}!function(){var t=window.location.pathname;if("/"===t||"/index.html"===t){var o=document.getElementById("trustpilotRatingBox");o&&(o.style.display="block")}}();
