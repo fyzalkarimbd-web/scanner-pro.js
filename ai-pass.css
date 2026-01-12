@@ -17,15 +17,19 @@
 }
 
 /* AI Demo Image Overlay */
+/* ডেমো ওভারলে স্টাইল - z-index অবশ্যই অনেক বেশি হতে হবে */
 .ai-demo-overlay {
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: rgba(0,0,0,0.9);
-    z-index: 99999999 !important; 
+    z-index: 2147483647 !important; /* এটি মডালের উপরে ছবি দেখাবে */
     display: none;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(5px);
 }
 .ai-demo-content { position: relative; max-width: 90%; max-height: 90%; }
 .ai-demo-content img { max-width: 100%; max-height: 85vh; border-radius: 12px; border: 4px solid #fff; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
