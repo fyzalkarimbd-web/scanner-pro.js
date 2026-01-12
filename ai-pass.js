@@ -8,8 +8,8 @@ const aiTranslations = {
     en: {
         title: "AI Passport Photo Lab",
         sub: "Click a card to auto-copy the prompt and open Google AI Studio instantly.",
-        demoBtn1: "<i class='fa-solid fa-eye'></i> View Demo Guide",
-        demoBtn2: "<i class='fa-solid fa-eye'></i> Photo sample",
+        demoBtn1: "<i class='fa-solid fa-eye'></i> View Guide 1",
+        demoBtn2: "<i class='fa-solid fa-eye'></i> View Guide 2",
         male: "Male Passport Photo",
         smale: "Clean skin, sharp suit, white background",
         female: "Female Passport Photo",
@@ -60,8 +60,8 @@ function closeAiPassportModal() {
 function switchAiLang(lang) {
     const modal = document.getElementById("aiPassportModal");
     const title = document.getElementById("ai-title");
-    const demoBtn1 = document.getElementById("ai-demo-btn-1");
-    const demoBtn2 = document.getElementById("ai-demo-btn-2");
+    const dBtn1 = document.getElementById("ai-demo-btn-1");
+    const dBtn2 = document.getElementById("ai-demo-btn-2");
     
     document.getElementById("ai-tab-en").classList.toggle("active", lang === "en");
     document.getElementById("ai-tab-bn").classList.toggle("active", lang === "bn");
@@ -69,21 +69,21 @@ function switchAiLang(lang) {
     if(lang === "bn") {
         modal.classList.add("lang-bn");
         title.style.fontFamily = "'SolaimanLipi', sans-serif";
-        if(demoBtn1) demoBtn1.style.fontFamily = "'SolaimanLipi', sans-serif";
-        if(demoBtn2) demoBtn2.style.fontFamily = "'SolaimanLipi', sans-serif";
+        if(dBtn1) dBtn1.style.fontFamily = "'SolaimanLipi', sans-serif";
+        if(dBtn2) dBtn2.style.fontFamily = "'SolaimanLipi', sans-serif";
     } else {
         modal.classList.remove("lang-bn");
         title.style.fontFamily = "'Inter', sans-serif";
-        if(demoBtn1) demoBtn1.style.fontFamily = "'Inter', sans-serif";
-        if(demoBtn2) demoBtn2.style.fontFamily = "'Inter', sans-serif";
+        if(dBtn1) dBtn1.style.fontFamily = "'Inter', sans-serif";
+        if(dBtn2) dBtn2.style.fontFamily = "'Inter', sans-serif";
     }
 
     const t = aiTranslations[lang];
     title.innerHTML = '<i class="fa-solid fa-robot"></i> ' + t.title;
     document.getElementById("ai-sub").innerHTML = t.sub;
     
-    if(demoBtn1) demoBtn1.innerHTML = t.demoBtn1;
-    if(demoBtn2) demoBtn2.innerHTML = t.demoBtn2;
+    if(dBtn1) dBtn1.innerHTML = t.demoBtn1;
+    if(dBtn2) dBtn2.innerHTML = t.demoBtn2;
 
     document.getElementById("txt-male").innerText = t.male;
     document.getElementById("sub-male").innerText = t.smale;
@@ -112,14 +112,14 @@ function processAiPassport(type) {
 }
 
 function showAiDemo(num) {
-    let box = document.getElementById("aiDemoBox" + num);
+    const box = document.getElementById("aiDemoBox" + num);
     if (box) {
         box.style.display = "flex";
     }
 }
 
 function hideAiDemo(num) {
-    let box = document.getElementById("aiDemoBox" + num);
+    const box = document.getElementById("aiDemoBox" + num);
     if (box) {
         box.style.display = "none";
     }
