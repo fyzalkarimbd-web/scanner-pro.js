@@ -45,19 +45,19 @@ const aiTranslations = {
     }
 };
 
-function openAiPassportModal() {
+window.openAiPassportModal = function() {
     if (typeof setActiveMode === "function") setActiveMode("mode-ai-passport");
     document.getElementById("aiPassportModal").style.display = "flex";
     document.body.style.overflow = "hidden";
     switchAiLang("en"); 
-}
+};
 
-function closeAiPassportModal() {
+window.closeAiPassportModal = function() {
     document.getElementById("aiPassportModal").style.display = "none";
     document.body.style.overflow = "auto";
-}
+};
 
-function switchAiLang(lang) {
+window.switchAiLang = function(lang) {
     const modal = document.getElementById("aiPassportModal");
     const tabEn = document.getElementById("ai-tab-en");
     const tabBn = document.getElementById("ai-tab-bn");
@@ -86,18 +86,22 @@ function switchAiLang(lang) {
     document.getElementById("sub-hijab").innerText = t.shijab;
     document.getElementById("ins-head").innerText = t.insHead;
     document.getElementById("ins-body").innerHTML = t.insBody;
-}
+};
 
-function processAiPassport(type) {
+window.processAiPassport = function(type) {
     const promptText = aiPrompts[type];
     const el = document.createElement('textarea');
     el.value = promptText;
     document.body.appendChild(el);
     el.select();
-    document.execCommand('copy');
+    try {
+        document.execCommand('copy');
+    } catch (err) {
+        console.error('Copy failed', err);
+    }
     document.body.removeChild(el);
     window.open("https://aistudio.google.com/prompts/new_chat?model=gemini-2.5-flash-image", "_blank");
-}
+};
 
 window.showAiDemo = function(num) {
     var box = document.getElementById("aiDemoBox" + num);
