@@ -49,7 +49,7 @@ function openAiPassportModal() {
     if (typeof setActiveMode === "function") setActiveMode("mode-ai-passport");
     document.getElementById("aiPassportModal").style.display = "flex";
     document.body.style.overflow = "hidden";
-    switchAiLang("en");
+    switchAiLang("en"); 
 }
 
 function closeAiPassportModal() {
@@ -111,16 +111,16 @@ function processAiPassport(type) {
     window.open(aiUrl, "_blank");
 }
 
-function showAiDemo(num) {
-    const box = document.getElementById("aiDemoBox" + num);
+window.showAiDemo = function(num) {
+    var box = document.getElementById("aiDemoBox" + num);
     if (box) {
         box.style.display = "flex";
     }
-}
+};
 
-function hideAiDemo(num) {
-    const box = document.getElementById("aiDemoBox" + num);
+window.hideAiDemo = function(num) {
+    var box = document.getElementById("aiDemoBox" + num);
     if (box) {
         box.style.display = "none";
     }
-}
+};
