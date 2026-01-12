@@ -61,6 +61,7 @@ window.switchAiLang = function(lang) {
     const modal = document.getElementById("aiPassportModal");
     const tabEn = document.getElementById("ai-tab-en");
     const tabBn = document.getElementById("ai-tab-bn");
+    const btnContainer = document.getElementById("demo-btn-container");
 
     if (lang === "en") {
         tabEn.classList.add("active");
@@ -75,8 +76,12 @@ window.switchAiLang = function(lang) {
     const t = aiTranslations[lang];
     document.getElementById("ai-title").innerHTML = '<i class="fa-solid fa-robot"></i> ' + t.title;
     document.getElementById("ai-sub").innerHTML = t.sub;
-    document.getElementById("ai-demo-btn-1").innerHTML = t.demoBtn1;
-    document.getElementById("ai-demo-btn-2").innerHTML = t.demoBtn2;
+
+    // Injecting demo buttons inside the script to ensure they work on GitHub
+    btnContainer.innerHTML = `
+        <button class="ai-demo-trigger" onclick="window.showAiDemo(1)">${t.demoBtn1}</button>
+        <button class="ai-demo-trigger" onclick="window.showAiDemo(2)">${t.demoBtn2}</button>
+    `;
 
     document.getElementById("txt-male").innerText = t.male;
     document.getElementById("sub-male").innerText = t.smale;
