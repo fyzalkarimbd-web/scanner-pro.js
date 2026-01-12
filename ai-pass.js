@@ -113,10 +113,18 @@ function processAiPassport(type) {
     window.open(aiUrl, "_blank");
 }
 
-/* Updated AI Demo Functions to handle multiple boxes */
 function showAiDemo(num) {
-    document.getElementById("aiDemoBox" + num).style.display = "flex";
+    let box = document.getElementById("aiDemoBox" + num);
+    if (box) {
+        box.style.display = "flex";
+    } else {
+        console.error("aiDemoBox" + num + " নট ফাউন্ড!");
+    }
 }
+
 function hideAiDemo(num) {
-    document.getElementById("aiDemoBox" + num).style.display = "none";
+    let box = document.getElementById("aiDemoBox" + num);
+    if (box) {
+        box.style.display = "none";
+    }
 }
