@@ -60,5 +60,3 @@
     .ai-demo-trigger { width: 100%; justify-content: center; }
     #ai-title { font-size: 22px !important; }
 }
-<!-- English Bengali Phonetic -->
-#bn-output,#bn-output::placeholder{font-family:&#39;SolaimanLipi&#39;,sans-serif!important}.bn-modal-body{border:2px solid #6366f1;border-radius:24px;padding:25px;background:#fff;text-align:center}.bn-title{display:flex;align-items:center;justify-content:center;gap:10px;font-weight:800;font-size:24px;margin-bottom:20px}.bn-textarea{width:100%;height:120px;padding:15px;border-radius:16px;border:2px solid #f1f5f9;background:#f8fafc;outline:none;font-size:20px;transition:0.3s;margin-bottom:15px;box-sizing:border-box;resize:vertical;max-width:100%}.bn-textarea:focus{border-color:#6366f1;background:#fff}.bn-btn-group{display:flex;gap:10px}.bn-btn{flex:1;padding:14px;border:none;border-radius:12px;cursor:pointer;font-weight:700;transition:0.3s;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px}.bn-copy-btn{background:#0f172a;color:#fff}.bn-copy-btn.success-bg{background:#25D366!important}.bn-clear-btn{background:#fee2e2;color:#ef4444;width:60px}
