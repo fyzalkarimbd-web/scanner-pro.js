@@ -153,23 +153,16 @@ function loadJImg(file, side) {
 }
 
 function downloadJointPro(t) {
-    // ছবি ইনপুট চেক করার লজিক (অ্যালার্ট নিশ্চিত করার জন্য)
     if (!jState.L.img || !jState.R.img) {
         let msg = "Please add both photos first!";
-        
-        // আপনার সাইটের কাস্টম পপআপ চেক
         if (typeof showPopup === "function") {
             showPopup(msg);
-        } 
-        // আপনার সাইটের অন্য একটি অ্যালার্ট ফাংশন চেক
-        else if (typeof showAlert === "function") {
+        } else if (typeof showAlert === "function") {
             showAlert(msg);
-        }
-        // কোনোটি না থাকলে সাধারণ ব্রাউজার অ্যালার্ট
-        else {
+        } else {
             alert(msg);
         }
-        return; // ছবি না থাকলে ফাংশন এখানেই থেমে যাবে
+        return;
     }
 
     let rows = parseInt(document.getElementById("jRows").value) || 1,
@@ -185,14 +178,14 @@ function downloadJointPro(t) {
         let { jsPDF: i } = window.jspdf,
             pdf = new i("p", "mm", "a4");
 
-        // আপনার চাহিদা অনুযায়ী কনফিগারেশন
         const imgW = 48.26; 
         const imgH = 38.1;
-        const gap = 4;     // ছবির মাঝখানের গ্যাপ ৮মিমি
-        const startY = 3;  // উপরের গ্যাপ কমিয়ে ৫মিমি করা হয়েছে
+        const gap = 4;     // ছবির মাঝখানের গ্যাপ
+        const startY = 3;  // উপরের গ্যাপ
 
-        let totalW = imgW * cols + (cols - 1) * gap;
-        let startX = (210 - totalW) / 2;
+        // বাম দিকের গ্যাপ ম্যানুয়ালি সেট করা হলো
+        // আপনি চাইলে ১০ এর জায়গায় ৫ বা ১৫ দিয়ে চেক করে দেখতে পারেন
+        let startX = 10; 
 
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < cols; c++) {
@@ -206,7 +199,6 @@ function downloadJointPro(t) {
         }
 
         if ("print" === t) {
-            // সরাসরি প্রিন্ট অপশন (ডাউনলোড হবে না)
             pdf.autoPrint();
             const blobUrl = pdf.output('bloburl');
             const printWindow = window.open(blobUrl, '_blank');
@@ -216,7 +208,6 @@ function downloadJointPro(t) {
                 alert("Please allow popups to use the print feature.");
             }
         } else {
-            // পিডিএফ সেভ
             pdf.save("Bank_Joint_Photo_A4.pdf");
         }
     }
