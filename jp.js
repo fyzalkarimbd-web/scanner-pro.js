@@ -65,52 +65,6 @@ function drawJSide(t, e, a) {
     }
 }
 
-function downloadJointPro(t) {
-    if (!jState.L.img || !jState.R.img) {
-        if (typeof showPopup === "function") showPopup("Please add both photos first!");
-        else alert("Please add both photos first!");
-        return;
-    }
-
-    let rows = parseInt(document.getElementById("jRows").value) || 1,
-        cols = parseInt(document.getElementById("jCols").value) || 1,
-        n = jCanvas.toDataURL("image/jpeg", 0.95);
-
-    if ("jpg" === t) {
-        let link = document.createElement("a");
-        link.download = "Joint_Photo.jpg"; link.href = n; link.click();
-    } else {
-        let { jsPDF: i } = window.jspdf,
-            pdf = new i("p", "mm", "a4");
-
-        // ফটো সাইজ এবং কাটার সুবিধার জন্য বর্ধিত ১০মিমি গ্যাপ
-        const imgW = 48.26, imgH = 38.1, gap = 10;
-        let startX = (210 - (imgW * cols + (cols - 1) * gap)) / 2;
-        let startY = 15;
-
-        for (let r = 0; r < rows; r++) {
-            for (let c = 0; c < cols; c++) {
-                let x = startX + (imgW + gap) * c;
-                let y = startY + (imgH + gap) * r;
-                if (x + imgW <= 210 && y + imgH <= 297) {
-                    pdf.addImage(n, "JPEG", x, y, imgW, imgH);
-                }
-            }
-        }
-
-        if ("print" === t) {
-            // ডাউনলোড না করে সরাসরি প্রিন্ট প্রিভিউ ওপেন করার লজিক
-            pdf.autoPrint();
-            const pdfBlob = pdf.output('bloburl');
-            const printWin = window.open(pdfBlob, '_blank');
-            if (printWin) printWin.focus();
-            else alert("Please allow popups for printing.");
-        } else {
-            pdf.save("Joint_Photo_A4.pdf");
-        }
-    }
-}
-
 function rotateJoint(t) { jState[t].rot = (jState[t].rot + 90) % 360; renderJPro(); }
 function flipJoint(t) { jState[t].flip *= -1; renderJPro(); }
 
@@ -166,7 +120,7 @@ function setupJEvents() {
                 el.oninput = n => {
                     let val = "Zoom" === t ? parseFloat(n.target.value) : parseInt(n.target.value);
                     jState[side][e] = val;
-                    document.getElementById("v-j" + t + side).innerText = ("Zoom" === t ? val.toFixed(2) : val) + ("Straighten" === t ? "°" : "Zoom" === t ? "x" : "%");
+                    document.getElementById("v-j" + t + side).innerText = val + ("Straighten" === t ? "°" : "Zoom" === t ? "x" : "%");
                     renderJPro();
                 };
             }
@@ -198,45 +152,183 @@ function loadJImg(file, side) {
     reader.readAsDataURL(file);
 }
 
-function deleteJointImage(t) {
-    jState[t].img = null; jState[t].zoom = 1; jState[t].rot = 0; jState[t].x = 0; jState[t].y = 0;
-    document.getElementById("jInput" + t).value = "";
-    document.getElementById("jHint" + t).style.display = "flex";
-    renderJPro();
-}
-
-async function removeJointBg(side) {
-    if (!jState[side].img) return (typeof showPopup === "function" ? showPopup("Please add photo first!") : alert("Please add photo first!"));
-    let btn = document.getElementById("jAiBtn" + side), oldText = btn.innerHTML;
-    btn.disabled = !0; btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Processing...";
-    let canvas = document.createElement("canvas");
-    canvas.width = jState[side].img.width; canvas.height = jState[side].img.height;
-    canvas.getContext("2d").drawImage(jState[side].img, 0, 0);
-    canvas.toBlob(async blob => {
-        let formData = new FormData();
-        formData.append("image_file", blob);
-        try {
-            let res = await fetch("https://api.remove.bg/v1.0/removebg", {
-                method: "POST", headers: { "X-Api-Key": JOINT_PRO_KEYS[jActiveKeyIndex] }, body: formData
-            });
-            if (res.ok) {
-                let resBlob = await res.blob(), img = new Image();
-                img.onload = () => { jState[side].img = img; renderJPro(); btn.disabled = !1; btn.innerHTML = oldText; };
-                img.src = URL.createObjectURL(resBlob);
-            } else { throw new Error("API Limit"); }
-        } catch (e) {
-            if (++jActiveKeyIndex < JOINT_PRO_KEYS.length) removeJointBg(side);
-            else { alert("AI Limit Exceeded!"); btn.disabled = !1; btn.innerHTML = oldText; }
+function downloadJointPro(t) {
+    // ছবি ইনপুট চেক করার লজিক (অ্যালার্ট নিশ্চিত করার জন্য)
+    if (!jState.L.img || !jState.R.img) {
+        let msg = "Please add both photos first!";
+        
+        // আপনার সাইটের কাস্টম পপআপ চেক
+        if (typeof showPopup === "function") {
+            showPopup(msg);
+        } 
+        // আপনার সাইটের অন্য একটি অ্যালার্ট ফাংশন চেক
+        else if (typeof showAlert === "function") {
+            showAlert(msg);
         }
-    });
+        // কোনোটি না থাকলে সাধারণ ব্রাউজার অ্যালার্ট
+        else {
+            alert(msg);
+        }
+        return; // ছবি না থাকলে ফাংশন এখানেই থেমে যাবে
+    }
+
+    let rows = parseInt(document.getElementById("jRows").value) || 1,
+        cols = parseInt(document.getElementById("jCols").value) || 1,
+        n = jCanvas.toDataURL("image/jpeg", 0.95);
+
+    if ("jpg" === t) {
+        let link = document.createElement("a");
+        link.download = "Bank_Joint_Photo.jpg";
+        link.href = n;
+        link.click();
+    } else {
+        let { jsPDF: i } = window.jspdf,
+            pdf = new i("p", "mm", "a4");
+
+        // আপনার চাহিদা অনুযায়ী কনফিগারেশন
+        const imgW = 48.26; 
+        const imgH = 38.1;
+        const gap = 4;     // ছবির মাঝখানের গ্যাপ ৮মিমি
+        const startY = 3;  // উপরের গ্যাপ কমিয়ে ৫মিমি করা হয়েছে
+
+        let totalW = imgW * cols + (cols - 1) * gap;
+        let startX = (210 - totalW) / 2;
+
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                let x = startX + (imgW + gap) * c;
+                let y = startY + (imgH + gap) * r;
+                
+                if (x + imgW <= 210 && y + imgH <= 297) {
+                    pdf.addImage(n, "JPEG", x, y, imgW, imgH);
+                }
+            }
+        }
+
+        if ("print" === t) {
+            // সরাসরি প্রিন্ট অপশন (ডাউনলোড হবে না)
+            pdf.autoPrint();
+            const blobUrl = pdf.output('bloburl');
+            const printWindow = window.open(blobUrl, '_blank');
+            if (printWindow) {
+                printWindow.focus();
+            } else {
+                alert("Please allow popups to use the print feature.");
+            }
+        } else {
+            // পিডিএফ সেভ
+            pdf.save("Bank_Joint_Photo_A4.pdf");
+        }
+    }
 }
 
 window.adjustJLayout = function(id, val) {
     let el = document.getElementById(id), n = parseInt(el.value) || 1;
     n += val;
-    if (id === "jRows") n = Math.max(1, Math.min(7, n));
-    else n = Math.max(1, Math.min(4, n));
+    if (id === "jRows") { n = Math.max(1, Math.min(7, n)); }
+    else { n = Math.max(1, Math.min(4, n)); }
     el.value = n;
 };
 
 window.setGlobalJBG = function(color) { jGlobalBG = color; renderJPro(); };
+
+
+// AI Remove Background ফাংশন আপডেট
+async function removeJointBg(side) {
+    // ছবি আছে কি না চেক
+    if (!jState[side].img) {
+        let msg = "Please add photo first!";
+        // আপনার সাইটের পপআপ ফাংশন চেক
+        if (typeof showPopup === "function") showPopup(msg);
+        else if (typeof showAlert === "function") showAlert(msg);
+        else alert(msg);
+        return;
+    }
+
+    let btn = document.getElementById("jAiBtn" + side), oldText = btn.innerHTML;
+    btn.disabled = !0; 
+    btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Processing...";
+    
+    let canvas = document.createElement("canvas");
+    canvas.width = jState[side].img.width; 
+    canvas.height = jState[side].img.height;
+    canvas.getContext("2d").drawImage(jState[side].img, 0, 0);
+    
+    canvas.toBlob(async blob => {
+        let formData = new FormData();
+        formData.append("image_file", blob);
+        try {
+            let res = await fetch("https://api.remove.bg/v1.0/removebg", {
+                method: "POST", 
+                headers: { "X-Api-Key": JOINT_PRO_KEYS[jActiveKeyIndex] }, 
+                body: formData
+            });
+            if (res.ok) {
+                let resBlob = await res.blob(), img = new Image();
+                img.onload = () => { 
+                    jState[side].img = img; 
+                    renderJPro(); 
+                    btn.disabled = !1; 
+                    btn.innerHTML = oldText; 
+                };
+                img.src = URL.createObjectURL(resBlob);
+            } else { throw new Error("API Limit or Error"); }
+        } catch (e) {
+            if (++jActiveKeyIndex < JOINT_PRO_KEYS.length) removeJointBg(side);
+            else { 
+                let limitMsg = "AI Limit Exceeded! Please try again later.";
+                if (typeof showPopup === "function") showPopup(limitMsg);
+                else alert(limitMsg);
+                btn.disabled = !1; 
+                btn.innerHTML = oldText; 
+            }
+        }
+    });
+}
+
+// ১. ইমেজ ডিলিট এবং কন্ট্রোল রিসেট ফাংশন
+function deleteJointImage(t) {
+    // ইমেজ না থাকলে আপনার সাইটের কাস্টম অ্যালার্ট দেখাবে
+    if (!jState[t].img) {
+        let msg = "No image to delete!";
+        
+        // অন্যান্য বাটনের মতো এখানেও একই অ্যালার্ট লজিক
+        if (typeof showPopup === "function") {
+            showPopup(msg);
+        } else if (typeof showAlert === "function") {
+            showAlert(msg);
+        } else {
+            alert(msg);
+        }
+        return;
+    }
+
+    // স্টেট রিসেট (L অথবা R সাইডের জন্য)
+    jState[t] = { img: null, zoom: 1, rot: 0, straighten: 0, flip: 1, x: 0, y: 0, br: 100, ct: 100, st: 100 };
+
+    // UI স্লাইডার এবং লেবেল রিসেট
+    const controls = ["Br", "Ct", "St", "Straighten", "Zoom"];
+    controls.forEach(ctrl => {
+        let inputEl = document.getElementById("j" + ctrl + t);
+        let labelEl = document.getElementById("v-j" + ctrl + t);
+        
+        if (inputEl) {
+            if (ctrl === "Zoom") inputEl.value = 1;
+            else if (ctrl === "Straighten") inputEl.value = 0;
+            else inputEl.value = 100;
+        }
+        
+        if (labelEl) {
+            if (ctrl === "Zoom") labelEl.innerText = "1.00x";
+            else if (ctrl === "Straighten") labelEl.innerText = "0°";
+            else labelEl.innerText = "100%";
+        }
+    });
+
+    // ইনপুট ফাইল এবং হিন্ট বক্স রিসেট
+    document.getElementById("jInput" + t).value = "";
+    document.getElementById("jHint" + t).style.display = "flex";
+
+    // ক্যানভাস আপডেট
+    renderJPro();
+}
