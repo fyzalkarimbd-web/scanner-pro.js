@@ -1,0 +1,89 @@
+.wdm-modal-width { max-width: 950px !important; width: 95% !important; }
+.wdm-container { 
+    background: #fff; border-radius: 20px; padding: 20px; 
+    font-family: &#39;SolaimanLipi&#39;, sans-serif !important; 
+}
+
+/* Force Font for Input Preview */
+.wdm-container input, .wdm-container textarea, .wdm-container select, #wdm-card-preview {
+    font-family: &#39;SolaimanLipi&#39;, Arial, sans-serif !important;
+}
+
+/* Perfect A4 Frame - Overflow Fixed */
+#wdm-card-preview {
+    width: 420px; /* Desktop Size */
+    background: #fff; 
+    position: relative;
+    
+    /* UPDATED PADDING AS REQUESTED */
+    padding: 10px 20px 10px 20px; 
+    
+    box-sizing: border-box; 
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15); 
+    margin: 0 auto;
+    overflow: hidden; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-start;
+}
+
+/* Templates Style */
+.wdm-t1 { border: 15px double #e11d48; background: #fffcfc; }
+.wdm-t2 { border: 20px solid #128002; outline: 5px solid #ffe300; outline-offset: -16px; background: #fff; }
+.wdm-t2::after { content: &#39;&#39;; position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; border: 2px solid #d4af37; pointer-events: none; }
+.wdm-t3 { border: 20px solid #b5156f; outline: 5px solid #fff; outline-offset: -16px; background: #fff; }
+.wdm-t4 { border: 12px double #d4af37; background: #fffdf5; }
+
+.wdm-temp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 15px 0; }
+.wdm-t-btn { padding: 10px 5px; border: 2px solid #e2e8f0; border-radius: 12px; cursor: pointer; text-align: center; font-size: 12px; font-weight: bold; }
+.wdm-t-btn.active { border-color: #e11d48; background: #fff1f2; color: #e11d48; }
+
+.wdm-photo-wrap { display: flex; justify-content: center; gap: 15px; margin: 15px 0; }
+.wdm-photo-box { width: 105px; height: 135px; border: 2px solid #ddd; border-radius: 8px; background: #f8fafc; overflow: hidden; flex-shrink: 0; }
+.wdm-photo-box img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Fixed Text Wrap to stay inside frame */
+.wdm-content-fixed {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+.wdm-main-grid { display: grid; grid-template-columns: 1fr 450px; gap: 25px; align-items: start; }
+
+@media (max-width: 480px) {
+    /* Stack Grid vertically */
+    .wdm-main-grid { grid-template-columns: 1fr; gap: 20px; }
+    
+    /* Move Preview to top */
+    .wdm-preview-side { order: -1; width: 100%; }
+    
+    .wdm-container { padding: 10px; }
+    
+    /* Responsive Scaling for the Card */
+    #wdm-card-preview { 
+        width: auto; 
+      
+        height: auto; 
+        padding: 10px 20px 10px 20px; /* Ensures padding stays 10px */
+    }
+    
+    /* Resize elements for mobile */
+    .wdm-photo-wrap { gap: 8px; }
+    .wdm-photo-box { width: 75px; height: 95px; }
+    
+    /* Adjust buttons grid to 2 columns */
+    .wdm-temp-grid { grid-template-columns: repeat(2, 1fr); } 
+    .wdm-t-btn { font-size: 11px; padding: 8px 4px; }
+}
+
+.wdm-field { margin-bottom: 12px; text-align: left; }
+.wdm-field label { font-size: 11px; font-weight: 800; color: #e11d48; display: block; margin-bottom: 4px; }
+.wdm-field input, .wdm-field select {
+    width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 15px; outline: none;
+}
+.wdm-field textarea {
+    width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 15px; outline: none;
+    resize: none !important; 
+}
